@@ -67,7 +67,7 @@ if uploaded_file:
 
         draw.ellipse((x - 10, y - 10, x + 10, y + 10), fill="black", outline="black")
 
-        draw.text((x + 20, y - 20), node["name"], fill="cyan", font=65)
+        draw.text((x + 20, y - 20), node["name"], fill="cyan", font=font)
 
     # Clickable Image
     value = streamlit_image_coordinates(display_image, key="pcb", width=1200)
