@@ -158,23 +158,36 @@ if uploaded_file:
 
             if st.sidebar.button("Save Node"):
 
+                st.write("Button Pressed")
+
                 if node_name.strip() != "":
 
-                    scale_x = image.width / st.session_state.selected_point["width"]
-                    scale_y = image.height / st.session_state.selected_point["height"]
+                     st.write("Node Name =", node_name)
 
-                    real_x = int(st.session_state.selected_point["x"] * scale_x)
-                    real_y = int(st.session_state.selected_point["y"] * scale_y)
+                     scale_x = image.width / st.session_state.selected_point["width"]
+                     scale_y = image.height / st.session_state.selected_point["height"]
 
-                    st.session_state.nodes.append(
-                        {"name": node_name, "x": real_x, "y": real_y}
-                    )
+                     real_x = int(st.session_state.selected_point["x"] * scale_x)
+                     real_y = int(st.session_state.selected_point["y"] * scale_y)
 
-                    st.session_state.selected_point = None
+                     st.write("Coordinates:", real_x, real_y)
 
-                    st.rerun()
+                     st.session_state.nodes.append(
+                          {
+                             "name": node_name,
+                              "x": real_x,
+                              "y": real_y,
+                        }
+                     )
+
+                     st.write("Nodes List:", st.session_state.nodes)
+
+                     st.session_state.selected_point = None
+
+                     st.stop()
 
                 else:
+
                     st.sidebar.error("Please enter a node name")
 
 # Saved Nodes Sidebar
