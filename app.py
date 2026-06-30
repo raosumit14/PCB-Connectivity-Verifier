@@ -246,26 +246,36 @@ if st.session_state.mode == "Connect Nodes":
         ],
     )
 
-        if connection_type in ["Trace", "Jumper"]:
-            expected_resistance = 0
+        connection_data = {}
 
-        elif connection_type == "Capacitor":
-            expected_resistance = "OPEN"
+        if connection_type == "Resistor":
 
-        elif connection_type in ["LED", "Diode"]:
-            expected_resistance = "DIODE"
+            connection_data["expected_resistance"] = int(
+                st.sidebar.text_input(
+                    "Resistance (Ω)",
+                    value="1000",
+                )
+            )
 
         elif connection_type == "Switch":
-            expected_resistance = st.sidebar.selectbox(
-                "Default State",
-                ["OPEN", "0"]
+
+            connection_data["state"] = st.sidebar.selectbox(
+                "Switch State",
+                ["OPEN", "CLOSED"],
             )
 
-        elif connection_type == "Resistor":
-            expected_resistance = st.sidebar.text_input(
-                "Resistance (Ω)",
-                value="1000"
-            )
+        elif connection_type == "LED":
+            pass
+
+        elif connection_type == "Diode":
+            pass
+
+        elif connection_type == "Capacitor":
+            pass
+
+        elif connection_type == "Trace":
+            pass
+
 
         if st.sidebar.button("Save Connection"):
 
@@ -284,14 +294,15 @@ if st.session_state.mode == "Connect Nodes":
 
             if not duplicate:
 
-                st.session_state.connections.append(
-                {
-                    "from": st.session_state.first_node,
-                    "to": st.session_state.second_node,
-                    "type": connection_type,
-                    "expected_resistance": expected_resistance,
-                }
-            )
+                connection = {
+                        "from": st.session_state.first_node,
+                        "to": st.session_state.second_node,
+                        "type": connection_type,
+                    }
+
+                connection.update(connection_data)
+
+                st.session_state.connections.append(connection)
 
             st.session_state.first_node = None
             st.session_state.second_node = None
