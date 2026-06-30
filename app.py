@@ -104,7 +104,7 @@ if uploaded_file:
                     clicked_node = node
                     break
 
-           if clicked_node:
+            if clicked_node:
 
                 if st.session_state.first_node is None:
 
