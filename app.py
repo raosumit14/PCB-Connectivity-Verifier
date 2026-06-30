@@ -108,26 +108,32 @@ if uploaded_file:
 
                     second_node = clicked_node["name"]
 
-                    if second_node != st.session_state.first_node:
+                   if second_node != st.session_state.first_node:
 
                         new_connection = {
                             "from": st.session_state.first_node,
                             "to": second_node,
-                        }
+                           "type": connection_type,
+                            "expected_resistance": expected_resistance,
+                      }
 
-                        reverse_connection = {
-                            "from": second_node,
-                            "to": st.session_state.first_node,
-                        }
+                        duplicate = False
 
-                        if (
-                            new_connection not in st.session_state.connections
-                            and reverse_connection not in st.session_state.connections
-                        ):
-                            st.session_state.connections.append(new_connection)
-                        st.session_state.last_connection = (
-                            f"{st.session_state.first_node} → {second_node}"
-                        )
+                        for conn in st.session_state.connections:
+                            if (
+                                (conn["from"] == new_connection["from"] and conn["to"] == new_connection["to"])
+                                or
+                                (conn["from"] == new_connection["to"] and conn["to"] == new_connection["from"])
+        ):
+                                duplicate = True
+                                break
+
+                         if not duplicate:
+                              st.session_state.connections.append(new_connection)
+
+                          st.session_state.last_connection = (
+                              f"{st.session_state.first_node} → {second_node}"
+    )
 
                     st.session_state.first_node = None
                     st.session_state.selected_point = None
