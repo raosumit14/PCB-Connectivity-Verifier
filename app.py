@@ -154,7 +154,7 @@ if uploaded_file:
 
             st.sidebar.write(f"Y = {st.session_state.selected_point['y']}")
 
-            node_name = st.sidebar.text_input("Node Name")
+            
 
             if st.session_state.selected_point:
 
