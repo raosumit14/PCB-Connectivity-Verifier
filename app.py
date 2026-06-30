@@ -54,7 +54,7 @@ if uploaded_file:
             )
 
     # Font
-    font = ImageFont.truetype("NotoSans-Bold.ttf", 65)
+    font = ImageFont.truetype("NotoSans-Bold.ttf", 45)
 
     # Draw Saved Nodes
     for node in st.session_state.nodes:
