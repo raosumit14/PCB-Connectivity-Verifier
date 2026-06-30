@@ -100,45 +100,48 @@ if uploaded_file:
 
             if clicked_node:
 
-                if st.session_state.first_node is None:
+    if st.session_state.first_node is None:
 
-                    st.session_state.first_node = clicked_node["name"]
+        st.session_state.first_node = clicked_node["name"]
 
-                else:
+    else:
 
-                    second_node = clicked_node["name"]
+        second_node = clicked_node["name"]
 
-                if second_node != st.session_state.first_node:
+        if second_node != st.session_state.first_node:
 
-                        new_connection = {
-                            "from": st.session_state.first_node,
-                            "to": second_node,
-                           "type": connection_type,
-                            "expected_resistance": expected_resistance,
-                      }
+            new_connection = {
+                "from": st.session_state.first_node,
+                "to": second_node,
+                "type": connection_type,
+                "expected_resistance": expected_resistance,
+            }
 
-                        duplicate = False
+            duplicate = False
 
-                        for conn in st.session_state.connections:
-                            if (
-                                (conn["from"] == new_connection["from"] and conn["to"] == new_connection["to"])
-                                or
-                                (conn["from"] == new_connection["to"] and conn["to"] == new_connection["from"])
-        ):
-                                duplicate = True
-                                break
+            for conn in st.session_state.connections:
 
-                         if not duplicate:
-                              st.session_state.connections.append(new_connection)
+                if (
+                    (conn["from"] == new_connection["from"] and conn["to"] == new_connection["to"])
+                    or
+                    (conn["from"] == new_connection["to"] and conn["to"] == new_connection["from"])
+                ):
 
-                          st.session_state.last_connection = (
-                              f"{st.session_state.first_node} → {second_node}"
-    )
+                    duplicate = True
+                    break
 
-                    st.session_state.first_node = None
-                    st.session_state.selected_point = None
+            if not duplicate:
 
-                    st.rerun()
+                st.session_state.connections.append(new_connection)
+
+            st.session_state.last_connection = (
+                f"{st.session_state.first_node} → {second_node}"
+            )
+
+        st.session_state.first_node = None
+        st.session_state.selected_point = None
+
+        st.rerun()
 
     # Coordinates Display
     if st.session_state.selected_point:
