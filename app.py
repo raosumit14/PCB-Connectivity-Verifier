@@ -78,8 +78,13 @@ if uploaded_file:
 
     # Clickable Image
     value = streamlit_image_coordinates(display_image, key="pcb", width=1200)
+    if "last_click" not in st.session_state:
+        st.session_state.last_click = None
 
-    if value is not None:
+    if (
+        value is not None
+        and value != st.session_state.last_click
+   ):
 
         if st.session_state.mode == "Add Node":
 
@@ -119,7 +124,7 @@ if uploaded_file:
 
                     st.session_state.second_node = clicked_node["name"]
                     st.session_state.pending_connection = True
-
+                st.session_state.last_click = value
                 st.rerun()
 
     # Coordinates Display
@@ -183,7 +188,7 @@ if uploaded_file:
                         )
 
                         st.session_state.selected_point = None
-
+                        st.session_state.last_click = value
                         st.rerun()
 
 # Saved Nodes Sidebar
@@ -207,7 +212,7 @@ for i, node in enumerate(st.session_state.nodes):
             for c in st.session_state.connections
             if c["from"] != deleted_name and c["to"] != deleted_name
         ]
-
+        st.session_state.last_click = value
         st.rerun()
 
 if st.session_state.mode == "Connect Nodes":
@@ -277,7 +282,7 @@ if st.session_state.mode == "Connect Nodes":
             st.session_state.first_node = None
             st.session_state.second_node = None
             st.session_state.pending_connection = False
-
+            st.session_state.last_click = value
             st.rerun()
     
 
@@ -293,7 +298,7 @@ if st.session_state.mode == "Connect Nodes":
         if col2.button("❌", key=f"delete_conn_{i}"):
 
             st.session_state.connections.pop(i)
-
+            st.session_state.last_click = value
             st.rerun()
 
 
