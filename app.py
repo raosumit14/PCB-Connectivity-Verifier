@@ -108,7 +108,7 @@ if uploaded_file:
 
                     second_node = clicked_node["name"]
 
-                   if second_node != st.session_state.first_node:
+                if second_node != st.session_state.first_node:
 
                         new_connection = {
                             "from": st.session_state.first_node,
