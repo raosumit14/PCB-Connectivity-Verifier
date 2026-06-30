@@ -27,6 +27,15 @@ if "connection_type" not in st.session_state:
 if "expected_resistance" not in st.session_state:
     st.session_state.expected_resistance = 0
 
+if "first_node" not in st.session_state:
+    st.session_state.first_node = None
+
+if "second_node" not in st.session_state:
+    st.session_state.second_node = None
+
+if "pending_connection" not in st.session_state:
+    st.session_state.pending_connection = False
+
 # Upload PCB Image
 uploaded_file = st.file_uploader("Upload PCB Image", type=["png", "jpg", "jpeg"])
 
