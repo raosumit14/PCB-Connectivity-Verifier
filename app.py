@@ -111,19 +111,16 @@ if uploaded_file:
                 if st.session_state.first_node is None:
 
                     st.session_state.first_node = clicked_node["name"]
+                    st.rerun()
 
                 elif st.session_state.second_node is None:
 
                     st.session_state.second_node = clicked_node["name"]
 
-                    if (
-                        st.session_state.first_node
-                        != st.session_state.second_node
-                    ):
+                    if st.session_state.first_node != st.session_state.second_node:
 
                         st.session_state.pending_connection = True
-
-                st.rerun()
+                        st.rerun()
 
     # Coordinates Display
     if st.session_state.selected_point:
