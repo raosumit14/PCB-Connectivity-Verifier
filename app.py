@@ -156,35 +156,36 @@ if uploaded_file:
 
             node_name = st.sidebar.text_input("Node Name")
 
-            if st.sidebar.button("Save Node"):
+            if st.session_state.selected_point:
 
-                st.write("Button Pressed")
+                st.sidebar.write(f"X = {st.session_state.selected_point['x']}")
+                st.sidebar.write(f"Y = {st.session_state.selected_point['y']}")
 
-                if node_name.strip() != "":
+                with st.sidebar.form("save_node_form"):
 
-                     st.write("Node Name =", node_name)
+                    node_name = st.text_input("Node Name")
 
-                     scale_x = image.width / st.session_state.selected_point["width"]
-                     scale_y = image.height / st.session_state.selected_point["height"]
+                    save_node = st.form_submit_button("Save Node")
 
-                     real_x = int(st.session_state.selected_point["x"] * scale_x)
-                     real_y = int(st.session_state.selected_point["y"] * scale_y)
+                if save_node:
 
-                     st.write("Coordinates:", real_x, real_y)
+                    scale_x = image.width / st.session_state.selected_point["width"]
+                    scale_y = image.height / st.session_state.selected_point["height"]
 
-                     st.session_state.nodes.append(
-                          {
-                             "name": node_name,
-                              "x": real_x,
-                              "y": real_y,
+                    real_x = int(st.session_state.selected_point["x"] * scale_x)
+                    real_y = int(st.session_state.selected_point["y"] * scale_y)
+
+                    st.session_state.nodes.append(
+                        {
+                            "name": node_name,
+                            "x": real_x,
+                            "y": real_y,
                         }
-                     )
+                    )
 
-                     st.write("Nodes List:", st.session_state.nodes)
+                    st.session_state.selected_point = None
 
-                     st.session_state.selected_point = None
-
-                     st.stop()
+                    st.rerun()
 
                 else:
 
