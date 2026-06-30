@@ -111,16 +111,16 @@ if uploaded_file:
                 if st.session_state.first_node is None:
 
                     st.session_state.first_node = clicked_node["name"]
-                    st.rerun()
 
-                elif st.session_state.second_node is None:
+                elif (
+                    st.session_state.second_node is None
+                    and clicked_node["name"] != st.session_state.first_node
+                ):
 
                     st.session_state.second_node = clicked_node["name"]
+                    st.session_state.pending_connection = True
 
-                    if st.session_state.first_node != st.session_state.second_node:
-
-                        st.session_state.pending_connection = True
-                        st.rerun()
+                st.rerun()
 
     # Coordinates Display
     if st.session_state.selected_point:
@@ -162,27 +162,29 @@ if uploaded_file:
                 st.write("DEBUG save_node =", save_node)
                 if save_node:
 
-                    scale_x = image.width / st.session_state.selected_point["width"]
-                    scale_y = image.height / st.session_state.selected_point["height"]
+                    if node_name.strip() == "":
 
-                    real_x = int(st.session_state.selected_point["x"] * scale_x)
-                    real_y = int(st.session_state.selected_point["y"] * scale_y)
+                        st.sidebar.error("Please enter a node name")
 
-                    st.session_state.nodes.append(
-                        {
-                            "name": node_name,
-                            "x": real_x,
-                            "y": real_y,
-                        }
-                    )
+                    else:
 
-                    st.session_state.selected_point = None
+                        scale_x = image.width / st.session_state.selected_point["width"]
+                        scale_y = image.height / st.session_state.selected_point["height"]
 
-                    st.rerun()
+                        real_x = int(st.session_state.selected_point["x"] * scale_x)
+                        real_y = int(st.session_state.selected_point["y"] * scale_y)
 
-                else:
+                        st.session_state.nodes.append(
+                            {
+                                "name": node_name,
+                                "x": real_x,
+                                "y": real_y,
+                            }
+                        )
 
-                    st.sidebar.error("Please enter a node name")
+                        st.session_state.selected_point = None
+
+                        st.rerun()
 
 # Saved Nodes Sidebar
 st.sidebar.markdown("---")
