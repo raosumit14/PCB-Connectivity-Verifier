@@ -77,7 +77,39 @@ if uploaded_file:
             st.session_state.selected_point = value
 
         elif st.session_state.mode == "Connect Nodes":
-             pass
+
+         st.session_state.selected_point = None
+
+        click_x = int(value["x"] * image.width / value["width"])
+        click_y = int(value["y"] * image.height / value["height"])
+
+        clicked_node = None
+
+        for node in st.session_state.nodes:
+
+             if abs(click_x - node["x"]) < 20 and abs(click_y - node["y"]) < 20:
+
+                 clicked_node = node
+                 break
+
+    if clicked_node:
+
+        if st.session_state.first_node is None:
+
+            st.session_state.first_node = clicked_node["name"]
+
+        elif st.session_state.second_node is None:
+
+            st.session_state.second_node = clicked_node["name"]
+
+            if (
+                st.session_state.first_node
+                != st.session_state.second_node
+            ):
+
+                st.session_state.pending_connection = True
+
+        st.rerun()
 
     # Coordinates Display
     if st.session_state.selected_point:
@@ -159,83 +191,73 @@ for i, node in enumerate(st.session_state.nodes):
 if st.session_state.mode == "Connect Nodes":
 
     st.sidebar.markdown("---")
-    st.sidebar.subheader("Create Connection")
 
-    node_names = [node["name"] for node in st.session_state.nodes]
+    if st.session_state.pending_connection:
 
-    if len(node_names) >= 2:
+        st.sidebar.subheader("Selected Connection")
 
-        from_node = st.sidebar.selectbox(
-            "From Node",
-            node_names,
-            key="from_node",
-        )
-
-        to_node = st.sidebar.selectbox(
-            "To Node",
-            node_names,
-            index=1,
-            key="to_node",
+        st.sidebar.success(
+             f"{st.session_state.first_node} → {st.session_state.second_node}"
         )
 
         connection_type = st.sidebar.selectbox(
-            "Connection Type",
-            [
-                "Trace",
-                "Resistor",
-                "Capacitor",
-                "Inductor",
-                "LED",
-                "Diode",
-                "Jumper",
-                "Switch",
-            ],
-        )
+             "Connection Type",
+        [
+            "Trace",
+            "Resistor",
+            "Capacitor",
+            "Inductor",
+            "LED",
+            "Diode",
+            "Jumper",
+            "Switch",
+        ],
+    )
 
         if connection_type == "Trace":
-            expected_resistance = 0
+             expected_resistance = 0
 
         elif connection_type == "Capacitor":
-            expected_resistance = "OPEN"
+             expected_resistance = "OPEN"
 
         else:
             expected_resistance = st.sidebar.text_input(
-                "Expected Resistance (Ω)",
-                value="1000",
+            "Expected Resistance (Ω)",
+            value="1000",
+        )
+
+        if st.sidebar.button("Save Connection"):
+
+            duplicate = any(
+            (
+                c["from"] == st.session_state.first_node
+                and c["to"] == st.session_state.second_node
+            )
+            or
+            (
+                c["from"] == st.session_state.second_node
+                and c["to"] == st.session_state.first_node
+            )
+            for c in st.session_state.connections
+        )
+
+            if not duplicate:
+
+                st.session_state.connections.append(
+                {
+                    "from": st.session_state.first_node,
+                    "to": st.session_state.second_node,
+                    "type": connection_type,
+                    "expected_resistance": expected_resistance,
+                }
             )
 
-        if st.sidebar.button("Add Connection"):
+            st.session_state.first_node = None
+            st.session_state.second_node = None
+            st.session_state.pending_connection = False
 
-            if from_node != to_node:
-
-                duplicate = any(
-                    (
-                        c["from"] == from_node
-                        and c["to"] == to_node
-                    )
-                    or
-                    (
-                        c["from"] == to_node
-                        and c["to"] == from_node
-                    )
-                    for c in st.session_state.connections
-                )
-
-                if not duplicate:
-
-                    st.session_state.connections.append(
-                        {
-                            "from": from_node,
-                            "to": to_node,
-                            "type": connection_type,
-                            "expected_resistance": expected_resistance,
-                        }
-                    )
-
-                    st.rerun()
-
-    st.sidebar.markdown("---")
-    st.sidebar.subheader("Connections")
+            st.rerun()
+    
 
     for i, conn in enumerate(st.session_state.connections):
 
