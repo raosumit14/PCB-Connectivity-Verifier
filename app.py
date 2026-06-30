@@ -55,7 +55,7 @@ if uploaded_file:
 
     # Font
     try:
-        font = ImageFont.truetype("arial.ttf", 30)
+        font = ImageFont.truetype("arial.ttf", 50)
     except:
         font = ImageFont.load_default()
 
@@ -65,9 +65,9 @@ if uploaded_file:
         x = node["x"]
         y = node["y"]
 
-        draw.ellipse((x - 10, y - 10, x + 10, y + 10), fill="blue", outline="red")
+        draw.ellipse((x - 10, y - 10, x + 10, y + 10), fill="cyan", outline="black")
 
-        draw.text((x + 20, y - 20), node["name"], fill="red", font=font)
+        draw.text((x + 20, y - 20), node["name"], fill="yellow", font=font)
 
     # Clickable Image
     value = streamlit_image_coordinates(display_image, key="pcb", width=1200)
