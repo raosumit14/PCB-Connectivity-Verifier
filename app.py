@@ -55,7 +55,7 @@ if uploaded_file:
 
     # Font
     try:
-        font = ImageFont.truetype("arial.ttf", 50)
+        font = ImageFont.truetype("arial.ttf", 40)
     except:
         font = ImageFont.load_default()
 
