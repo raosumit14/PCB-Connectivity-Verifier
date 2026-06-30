@@ -36,6 +36,9 @@ if "second_node" not in st.session_state:
 if "pending_connection" not in st.session_state:
     st.session_state.pending_connection = False
 
+if "last_click" not in st.session_state:
+    st.session_state.last_click = None
+
 # Upload PCB Image
 uploaded_file = st.file_uploader("Upload PCB Image", type=["png", "jpg", "jpeg"])
 
@@ -110,7 +113,7 @@ if uploaded_file:
 
                     clicked_node = node
                     break
-
+            st.session_state.last_click = value
             if clicked_node:
 
                 if st.session_state.first_node is None:
@@ -124,8 +127,6 @@ if uploaded_file:
 
                     st.session_state.second_node = clicked_node["name"]
                     st.session_state.pending_connection = True
-                st.session_state.last_click = value
-                st.rerun()
 
     # Coordinates Display
     if st.session_state.selected_point:
@@ -218,7 +219,11 @@ for i, node in enumerate(st.session_state.nodes):
 if st.session_state.mode == "Connect Nodes":
 
     st.sidebar.markdown("---")
+    if st.session_state.first_node and not st.session_state.pending_connection:
 
+        st.sidebar.info(
+            f"Selected: {st.session_state.first_node}"
+        )
     if st.session_state.pending_connection:
 
         st.sidebar.subheader("Selected Connection")
