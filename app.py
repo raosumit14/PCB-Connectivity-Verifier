@@ -25,6 +25,12 @@ if "first_node" not in st.session_state:
 
 if "last_connection" not in st.session_state:
     st.session_state.last_connection = None
+    
+if "connection_type" not in st.session_state:
+    st.session_state.connection_type = "Trace"
+
+if "expected_resistance" not in st.session_state:
+    st.session_state.expected_resistance = 0
 
 # Upload PCB Image
 uploaded_file = st.file_uploader("Upload PCB Image", type=["png", "jpg", "jpeg"])
@@ -206,6 +212,36 @@ for i, node in enumerate(st.session_state.nodes):
         st.rerun()
 
 if st.session_state.mode == "Connect Nodes":
+    st.sidebar.markdown("---")
+    st.sidebar.subheader("Connection Properties")
+
+    connection_type = st.sidebar.selectbox(
+        "Connection Type",
+        [
+            "Trace",
+            "Resistor",
+            "Capacitor",
+            "Inductor",
+            "LED",
+            "Diode",
+            "Jumper",
+            "Switch"
+        ]
+)
+
+    expected_resistance = None
+
+    if connection_type == "Trace":
+    expected_resistance = 0
+
+    elif connection_type == "Capacitor":
+    expected_resistance = "OPEN"
+
+    else:
+    expected_resistance = st.sidebar.text_input(
+        "Expected Resistance (Ω)",
+        value="1000"
+    )
 
     st.sidebar.markdown("---")
     st.sidebar.subheader("Connections")
@@ -220,7 +256,10 @@ if st.session_state.mode == "Connect Nodes":
 
         col1, col2 = st.sidebar.columns([3, 1])
 
-        col1.write(f"{conn['from']} → {conn['to']}")
+        col1.write(
+    f"{conn['from']} → {conn['to']} "
+    f"({conn['type']}, {conn['expected_resistance']})"
+)
 
         if col2.button("❌", key=f"delete_conn_{i}"):
 
