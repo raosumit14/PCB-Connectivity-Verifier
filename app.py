@@ -54,7 +54,10 @@ if uploaded_file:
             )
 
     # Font
-    font = ImageFont.truetype("C:/Windows/Fonts/arialbd.ttf", 65)
+    try:
+    font = ImageFont.truetype("arial.ttf", 65)
+except:
+    font = ImageFont.load_default()
 
     # Draw Saved Nodes
     for node in st.session_state.nodes:
