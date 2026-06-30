@@ -232,13 +232,13 @@ if st.session_state.mode == "Connect Nodes":
     expected_resistance = None
 
     if connection_type == "Trace":
-    expected_resistance = 0
+        expected_resistance = 0
 
     elif connection_type == "Capacitor":
-    expected_resistance = "OPEN"
+        expected_resistance = "OPEN"
 
     else:
-    expected_resistance = st.sidebar.text_input(
+        expected_resistance = st.sidebar.text_input(
         "Expected Resistance (Ω)",
         value="1000"
     )
