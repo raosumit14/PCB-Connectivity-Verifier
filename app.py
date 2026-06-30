@@ -149,12 +149,7 @@ if uploaded_file:
         st.sidebar.header("Node Information")
 
         if st.session_state.selected_point:
-
-            st.sidebar.write(f"X = {st.session_state.selected_point['x']}")
-
-            st.sidebar.write(f"Y = {st.session_state.selected_point['y']}")
-
-            
+    
 
             if st.session_state.selected_point:
 
@@ -166,7 +161,8 @@ if uploaded_file:
                     node_name = st.text_input("Node Name")
 
                     save_node = st.form_submit_button("Save Node")
-
+                st.write("DEBUG node_name =", repr(node_name))
+                st.write("DEBUG save_node =", save_node)
                 if save_node:
 
                     scale_x = image.width / st.session_state.selected_point["width"]
