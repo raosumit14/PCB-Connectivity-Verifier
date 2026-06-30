@@ -315,10 +315,17 @@ if st.session_state.mode == "Connect Nodes":
 
         col1, col2 = st.sidebar.columns([3, 1])
 
-        col1.write(
-            f"{conn['from']} → {conn['to']} "
-            f"({conn['type']}, {conn['expected_resistance']})"
-        )
+        text = f"{conn['from']} → {conn['to']} ({conn['type']}"
+
+        if "expected_resistance" in conn:
+            text += f", {conn['expected_resistance']}"
+
+        if "state" in conn:
+            text += f", {conn['state']}"
+
+        text += ")"
+
+        col1.write(text)
 
         if col2.button("❌", key=f"delete_conn_{i}"):
 
