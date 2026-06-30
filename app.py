@@ -76,7 +76,7 @@ if uploaded_file:
 
             st.session_state.selected_point = value
 
-       elif st.session_state.mode == "Connect Nodes":
+        elif st.session_state.mode == "Connect Nodes":
              pass
 
     # Coordinates Display
