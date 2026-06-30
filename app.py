@@ -83,7 +83,12 @@ if uploaded_file:
 
         if st.session_state.mode == "Add Node":
 
-            st.session_state.selected_point = value
+            st.session_state.selected_point = {
+                "x": value["x"],
+                "y": value["y"],
+                "width": value["width"],
+                "height": value["height"],
+            }
 
         elif st.session_state.mode == "Connect Nodes":
 
@@ -155,12 +160,11 @@ if uploaded_file:
 
                 if node_name.strip() != "":
 
-                    scale_x = image.width / value["width"]
-                    scale_y = image.height / value["height"]
+                    scale_x = image.width / st.session_state.selected_point["width"]
+                    scale_y = image.height / st.session_state.selected_point["height"]
 
-                    real_x = int(value["x"] * scale_x)
-
-                    real_y = int(value["y"] * scale_y)
+                    real_x = int(st.session_state.selected_point["x"] * scale_x)
+                    real_y = int(st.session_state.selected_point["y"] * scale_y)
 
                     st.session_state.nodes.append(
                         {"name": node_name, "x": real_x, "y": real_y}
