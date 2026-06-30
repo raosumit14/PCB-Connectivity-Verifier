@@ -92,38 +92,38 @@ if uploaded_file:
 
         elif st.session_state.mode == "Connect Nodes":
 
-         st.session_state.selected_point = None
+            st.session_state.selected_point = None
 
-        click_x = int(value["x"] * image.width / value["width"])
-        click_y = int(value["y"] * image.height / value["height"])
+            click_x = int(value["x"] * image.width / value["width"])
+            click_y = int(value["y"] * image.height / value["height"])
 
-        clicked_node = None
+            clicked_node = None
 
-        for node in st.session_state.nodes:
+            for node in st.session_state.nodes:
 
-             if abs(click_x - node["x"]) < 20 and abs(click_y - node["y"]) < 20:
+                if abs(click_x - node["x"]) < 20 and abs(click_y - node["y"]) < 20:
 
-                 clicked_node = node
-                 break
+                    clicked_node = node
+                    break
 
-    if clicked_node:
+            if clicked_node:
 
-        if st.session_state.first_node is None:
+                if st.session_state.first_node is None:
 
-            st.session_state.first_node = clicked_node["name"]
+                    st.session_state.first_node = clicked_node["name"]
 
-        elif st.session_state.second_node is None:
+                elif st.session_state.second_node is None:
 
-            st.session_state.second_node = clicked_node["name"]
+                    st.session_state.second_node = clicked_node["name"]
 
-            if (
-                st.session_state.first_node
-                != st.session_state.second_node
-            ):
+                    if (
+                        st.session_state.first_node
+                        != st.session_state.second_node
+                    ):
 
-                st.session_state.pending_connection = True
+                        st.session_state.pending_connection = True
 
-        st.rerun()
+                st.rerun()
 
     # Coordinates Display
     if st.session_state.selected_point:
