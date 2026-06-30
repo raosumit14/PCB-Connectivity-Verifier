@@ -240,32 +240,32 @@ if st.session_state.mode == "Connect Nodes":
             "Capacitor",
             "Inductor",
             "LED",
-            "IC",
             "Diode",
+            "IC",
             "Switch",
         ],
     )
 
         if connection_type in ["Trace", "Jumper"]:
-           expected_resistance = 0
+            expected_resistance = 0
 
-       elif connection_type == "Capacitor":
+        elif connection_type == "Capacitor":
             expected_resistance = "OPEN"
 
-       elif connection_type in ["LED", "Diode"]:
+        elif connection_type in ["LED", "Diode"]:
             expected_resistance = "DIODE"
 
-       elif connection_type == "Switch":
+        elif connection_type == "Switch":
             expected_resistance = st.sidebar.selectbox(
-             "Default State",
-              ["OPEN", "0"]
-              )
+                "Default State",
+                ["OPEN", "0"]
+            )
 
-elif connection_type == "Resistor":
-    expected_resistance = st.sidebar.text_input(
-        "Resistance (Ω)",
-        value="1000"
-    )
+        elif connection_type == "Resistor":
+            expected_resistance = st.sidebar.text_input(
+                "Resistance (Ω)",
+                value="1000"
+            )
 
         if st.sidebar.button("Save Connection"):
 
